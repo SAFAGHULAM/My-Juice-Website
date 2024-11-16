@@ -1,101 +1,56 @@
-import Image from "next/image";
+"use client";
+import React, { useState } from 'react';
+import ProductList from '../app/components/ProductList'; // Assume this is a component that displays products
+import CartSummary from '../app/components/CartSummary'; // Assume this is the cart summary component
 
-export default function Home() {
+const Home = () => {
+  const [cart, setCart] = useState<any[]>([]);  // Ensure cart state is initialized properly
+
+  // Function to add items to the cart
+  const addToCart = (product: any) => {
+    setCart((prevCart: any[]) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      if (existingProduct) {
+        // If the product exists in the cart, increase its quantity
+        return prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        // If the product is not in the cart, add it with quantity 1
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
+  // Sample product data
+  const products = [
+    { id: 1, name: 'Orange Juice', description: 'Fresh, 100% pure orange juice, packed with natural sweetness and vitamins—no added sugars or preservatives.', price: 5.47, image: 'images/orangejuice-image.webp' },
+    { id: 2, name: 'Apple Juice', description: 'Crisp and delicious, our 100% pure apple juice is made from hand-picked apples, offering a smooth, refreshing taste with no added sugars or preservatives.', price: 4.88, image: 'images/applejuice-image.webp' },
+    { id: 3, name: 'Lemon Juice', description: 'Tangy and fresh, our 100% pure lemon juice is a zesty, all-natural way to brighten up any dish or drink—no added sugars or preservatives.', price: 3.47, image: 'images/lemonjuice-image.webp' },
+    { id: 4, name: 'Carrot Juice', description: 'Fresh and flavorful, our 100% pure carrot juice is packed with nutrients and natural sweetness—no added sugars or preservatives.', price: 6.99, image: 'images/carrotjuice-image.jpeg' },
+    { id: 5, name: 'Mango Juice', description: 'Indulge in the rich, tropical flavor of our 100% pure mango juice—refreshing, naturally sweet, and free from added sugars or preservatives.', price: 7.49, image: 'images/mangojuice-image.webp' },
+    { id: 6, name: 'Pineapple Juice', description: 'Our 100% pure pineapple juice offers a vibrant, tangy taste of the tropics, with no added sugars or preservatives—just pure, natural refreshment.', price: 5.49, image: 'images/pineapplejuice-image.webp' },
+    { id: 7, name: 'Grape Juice', description: 'Enjoy the rich, bold flavor of our 100% pure grape juice—naturally sweet, refreshing, and free from added sugars or preservatives.', price: 6.59, image: 'images/grapejuice-image.jpg' },
+    { id: 8, name: 'Strawberry Juice', description: 'Bursting with natural sweetness, our 100% pure strawberry juice is refreshingly smooth and free from added sugars or preservatives.', price: 5.79, image: 'images/strawberryjuice-image.jpeg' },
+    { id: 9, name: 'Blueberry Juice', description: 'Our 100% pure blueberry juice is rich in flavor, naturally sweet, and packed with antioxidants—free from added sugars or preservatives.', price: 6.29, image: 'images/blueberryjuice-image.jpeg' },
+    { id: 10, name: 'Peach Juice', description: 'Enjoy the smooth, juicy sweetness of our 100% pure peach juice—refreshing, naturally delicious, and free from added sugars or preservatives.', price: 4.79, image: 'images/peachjuice-image.jpg' },
+    { id: 11, name: 'Watermelon Juice', description: 'Quench your thirst with our 100% pure watermelon juice—refreshing, naturally sweet, and free from added sugars or preservatives.', price: 3.44, image: 'images/watermelonjuice-image.jpeg' },
+  ];
+
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div>
+      <h1 className='text-3xl font-semibold text-center mb-8'>Our Juices</h1>
+      <ProductList products={products} addToCart={addToCart} />
+      {/* Render the CartSummary and pass the cart state */}
+      <CartSummary cart={cart} />
+      <div className='text-right'>
+      <button className='mt-4 bg-green-500 text-white px-6 py-2 rounded-full hover:bg-green-600 sm:px-8 sm:py-3'>
+          Proceed to Checkout
+      </button>
+      </div>
     </div>
   );
-}
+};
+
+export default Home;
